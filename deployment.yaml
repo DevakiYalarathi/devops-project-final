@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devops-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: devops-app
+  template:
+    metadata:
+      labels:
+        app: devops-app
+    spec:
+      containers:
+      - name: devops-app
+        image: devakiyalarathi/devops-app:latest
+        ports:
+        - containerPort: 5000
+
+        # ✅ ConfigMap
+        envFrom:
+        - configMapRef:
+            name: devops-config
+
+        # ✅ Liveness Probe
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+
+        # ✅ Readiness Probe
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 5
