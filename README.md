@@ -1,1 +1,2 @@
 Test trigger
+trigger build
